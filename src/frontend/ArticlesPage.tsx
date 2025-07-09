@@ -14,20 +14,37 @@ const ArticlesPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:1337/api/articles")
+    const jwt = localStorage.getItem("jwt");
+
+    if (!jwt) {
+      navigate("/login");
+      return;
+    }
+
+    fetch("http://localhost:1337/api/articles", {
+      headers: jwt ? { Authorization: `Bearer ${jwt}` } : {},
+    })
       .then((res) => res.json())
       .then((data) => {
         setArticles(data.data || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [navigate]);
 
   if (loading) return <div>Loading...</div>;
 
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    navigate("/login");
+  };
+
   return (
     <div>
-      <button onClick={() => navigate("/")}>Go to /</button>
+      <nav style={{ display: "flex", gap: 8, marginBottom: 24 }}>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={() => navigate("/")}>Go to /</button>
+      </nav>
       <h1>Articles</h1>
       <ul>
         {articles.map((article) => (
