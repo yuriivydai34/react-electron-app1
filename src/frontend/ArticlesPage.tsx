@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Article = {
   id: number;
@@ -9,6 +10,8 @@ type Article = {
 const ArticlesPage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:1337/api/articles")
@@ -24,6 +27,7 @@ const ArticlesPage: React.FC = () => {
 
   return (
     <div>
+      <button onClick={() => navigate("/")}>Go to /</button>
       <h1>Articles</h1>
       <ul>
         {articles.map((article) => (
