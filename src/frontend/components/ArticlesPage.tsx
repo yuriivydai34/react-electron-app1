@@ -21,7 +21,7 @@ const ArticlesPage: React.FC = () => {
       return;
     }
 
-    fetch("http://localhost:1337/api/articles", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/articles`, {
       headers: jwt ? { Authorization: `Bearer ${jwt}` } : {},
     })
       .then((res) => res.json())
