@@ -1,20 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ArticlesPage from "./components/ArticlesPage";
 import LoginPage from "./components/LoginPage";
-
-
-const Home: React.FC = () => {
-  const navigate = useNavigate();
-  return (
-    <div>
-      <nav style={{ display: "flex", gap: 8, marginBottom: 24 }}>
-        <button onClick={() => navigate("/articles")}>Go to Articles</button>
-      </nav>
-      <h1>Home Page</h1>
-    </div>
-  );
-};
+import Home from "./components/Home";
 
 const App: React.FC = () => (
   <Router>
