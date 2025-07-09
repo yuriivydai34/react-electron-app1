@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import ArticlesPage from "./ArticlesPage";
-import LoginPage from "./LoginPage";
+import ArticlesPage from "./components/ArticlesPage";
+import LoginPage from "./components/LoginPage";
 
 
 const Home: React.FC = () => {
