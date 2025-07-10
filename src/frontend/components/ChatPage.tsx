@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from '../socket';
 import ConnectionState from "./ConnectionState";
 
 function ChatPage() {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const navigate = useNavigate();
   const [messages, setMessages] = useState<string[]>([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // This effect runs when the component mounts
@@ -24,11 +25,23 @@ function ChatPage() {
     socket.on('disconnect', onDisconnect);
 
     socket.on('chat message', (msg) => {
-      console.log("Received chat message:", msg);
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
 
   }, []);
+
+  // Function to send messages
+  const sendMessage = useCallback(() => {
+    if (
+      isConnected &&
+      inputMessage.trim() !== ''
+    ) {
+      socket.emit('chat message', inputMessage);
+
+      // Clear input field after sending
+      setInputMessage('');
+    }
+  }, [inputMessage]);
 
   return (
     <div>
@@ -47,6 +60,21 @@ function ChatPage() {
             </div>
           ))
         )}
+      </div>
+      <div className="input-area">
+        <input
+          type="text"
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          placeholder="Type a message..."
+          disabled={!isConnected}
+        />
+        <button
+          onClick={sendMessage}
+          disabled={!isConnected || inputMessage.trim() === ''}
+        >
+          Send
+        </button>
       </div>
     </div>
   );
