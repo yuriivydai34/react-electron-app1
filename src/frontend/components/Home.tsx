@@ -35,6 +35,7 @@ const Home: React.FC = () => {
     <div>
       <nav style={{ display: "flex", gap: 8, marginBottom: 24 }}>
         <button onClick={() => navigate("/articles")}>Go to Articles</button>
+        <button onClick={() => navigate("/chat")}>Go to Chat</button>
       </nav>
       <h1>Home Page</h1>
       <input type="file" onChange={handleFileChange} />
