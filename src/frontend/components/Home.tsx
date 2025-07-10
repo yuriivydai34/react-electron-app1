@@ -1,7 +1,24 @@
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+
+  const [nodeVersion, setNodeVersion] = useState<string | undefined>(undefined);
+
+  const updateNodeVersion = useCallback(
+    async () => setNodeVersion(await backend.nodeVersion("Hello from App.tsx!")),
+    []
+  );
+
+  const connectToDatabase = useCallback(async () => {
+    try {
+      const db = await backend.connectToDatabase();
+      console.log("Connected to the database:", db);
+    } catch (error) {
+      console.error("Error connecting to the database:", error);
+    }
+  }, []);
 
   // Function to handle file input change
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -33,6 +50,12 @@ const Home: React.FC = () => {
 
   return (
     <div>
+      <button onClick={updateNodeVersion}>
+        Node version is {nodeVersion}
+      </button>
+      <button onClick={connectToDatabase}>
+        Connect to Database
+      </button>
       <nav style={{ display: "flex", gap: 8, marginBottom: 24 }}>
         <button onClick={() => navigate("/articles")}>Go to Articles</button>
         <button onClick={() => navigate("/chat")}>Go to Chat</button>
